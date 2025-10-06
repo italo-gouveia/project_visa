@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  visa-payment-service:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - postgres
+    networks:
+      - visa-network
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: visa_payment
+      POSTGRES_USER: visa_user
+      POSTGRES_PASSWORD: visa_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - visa-network
+
+volumes:
+  postgres_data:
+
+networks:
+  visa-network:
+    driver: bridge

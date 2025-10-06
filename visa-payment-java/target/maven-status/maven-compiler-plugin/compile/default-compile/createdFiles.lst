@@ -1,0 +1,15 @@
+com\visa\paymentservice\model\OperationType.class
+com\visa\paymentservice\repository\AccountRepository.class
+com\visa\paymentservice\service\TransactionService.class
+com\visa\paymentservice\controller\AccountController.class
+com\visa\paymentservice\dto\AccountRequest.class
+com\visa\paymentservice\dto\AccountResponse.class
+com\visa\paymentservice\model\Transaction.class
+com\visa\paymentservice\model\Account.class
+com\visa\paymentservice\dto\TransactionRequest.class
+com\visa\paymentservice\repository\TransactionRepository.class
+com\visa\paymentservice\controller\TransactionController.class
+com\visa\paymentservice\repository\OperationTypeRepository.class
+com\visa\paymentservice\service\AccountService.class
+com\visa\paymentservice\PaymentServiceApplication.class
+com\visa\paymentservice\config\DatabaseInitializer.class

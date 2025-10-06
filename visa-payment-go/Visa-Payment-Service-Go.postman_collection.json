@@ -1,0 +1,414 @@
+{
+	"info": {
+		"_postman_id": "visa-payment-service-go-collection",
+		"name": "Visa Payment Service - Go",
+		"description": "Collection to test the Visa payment service implemented in Go with the Gin framework",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"health"
+					]
+				},
+				"description": "Checks if the Go service is working"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Account - Success",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"document_number\": \"12345678900\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"accounts"
+					]
+				},
+				"description": "Creates a new account with a valid document"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Account - Invalid Document",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"document_number\": \"123\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"accounts"
+					]
+				},
+				"description": "Attempts to create an account with an invalid document (less than 11 digits)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Account - Duplicate Document",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"document_number\": \"12345678900\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"accounts"
+					]
+				},
+				"description": "Attempts to create an account with a duplicate document"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account - Success",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/accounts/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"accounts",
+						"1"
+					]
+				},
+				"description": "Fetches an account by ID (use the ID returned on creation)"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account - Not Found",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/accounts/999",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"accounts",
+						"999"
+					]
+				},
+				"description": "Attempts to fetch a non-existent account"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transaction - Normal Purchase",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"account_id\": 1,\n  \"operation_type_id\": 1,\n  \"amount\": 50.00\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"transactions"
+					]
+				},
+				"description": "Creates a normal purchase transaction (should be negative)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transaction - Credit Voucher",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"account_id\": 1,\n  \"operation_type_id\": 4,\n  \"amount\": 25.00\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"transactions"
+					]
+				},
+				"description": "Creates a credit voucher transaction (should be positive)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transaction - Withdrawal",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"account_id\": 1,\n  \"operation_type_id\": 3,\n  \"amount\": 100.00\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"transactions"
+					]
+				},
+				"description": "Creates a withdrawal transaction (should be negative)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transaction - Purchase with Installments",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"account_id\": 1,\n  \"operation_type_id\": 2,\n  \"amount\": 200.00\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"transactions"
+					]
+				},
+				"description": "Creates a purchase with installments transaction (should be negative)"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transaction - Invalid Account",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"account_id\": 999,\n  \"operation_type_id\": 1,\n  \"amount\": 50.00\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"transactions"
+					]
+				},
+				"description": "Attempts to create a transaction with a non-existent account"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transaction - Invalid Operation Type",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"account_id\": 1,\n  \"operation_type_id\": 999,\n  \"amount\": 50.00\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"transactions"
+					]
+				},
+				"description": "Attempts to create a transaction with a non-existent operation type"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transaction - Negative Amount",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"account_id\": 1,\n  \"operation_type_id\": 1,\n  \"amount\": -50.00\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"transactions"
+					]
+				},
+				"description": "Attempts to create a transaction with a negative amount (should fail validation)"
+			},
+			"response": []
+		},
+		{
+			"name": "Swagger Documentation",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/swagger/index.html",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swagger",
+						"index.html"
+					]
+				},
+				"description": "Opens the Swagger documentation for the Go API"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

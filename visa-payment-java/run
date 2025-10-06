@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Visa Payment Service - Run Script
+
+echo "🚀 Starting Visa Payment Service..."
+
+# Check if Java is installed
+if ! command -v java &> /dev/null; then
+    echo "❌ Java is not installed. Please install Java 17 or higher."
+    exit 1
+fi
+
+# Check if Maven is installed
+if ! command -v mvn &> /dev/null; then
+    echo "❌ Maven is not installed. Please install Maven."
+    exit 1
+fi
+
+# Check if we're in the right directory
+if [ ! -f "pom.xml" ]; then
+    echo "❌ pom.xml not found. Please run this script from the visa-payment-java directory."
+    exit 1
+fi
+
+# Clean and build the project
+echo "🔨 Building the project..."
+mvn clean package -DskipTests
+
+# Check if build was successful
+if [ $? -ne 0 ]; then
+    echo "❌ Build failed. Please check the errors above."
+    exit 1
+fi
+
+# Check if JAR file exists
+if [ ! -f "target/payment-service-0.0.1-SNAPSHOT.jar" ]; then
+    echo "❌ JAR file not found. Build may have failed."
+    exit 1
+fi
+
+# Run the application
+echo "🎯 Starting the application..."
+echo "📚 API Documentation: http://localhost:8080/swagger-ui.html"
+echo "🗄️  H2 Console: http://localhost:8080/h2-console"
+echo "💊 Health Check: http://localhost:8080/actuator/health"
+echo ""
+echo "Press Ctrl+C to stop the service"
+echo ""
+
+java -jar target/payment-service-0.0.1-SNAPSHOT.jar

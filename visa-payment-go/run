@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Visa Payment Service - Go Run Script
+
+echo "🚀 Starting Visa Payment Service (Go)..."
+
+# Check if Go is installed
+if ! command -v go &> /dev/null; then
+    echo "❌ Go is not installed. Please install Go 1.21 or higher."
+    exit 1
+fi
+
+# Check Go version
+GO_VERSION=$(go version | awk '{print $3}' | sed 's/go//')
+REQUIRED_VERSION="1.21"
+
+if [ "$(printf '%s\n' "$REQUIRED_VERSION" "$GO_VERSION" | sort -V | head -n1)" != "$REQUIRED_VERSION" ]; then
+    echo "❌ Go version $GO_VERSION is too old. Please install Go $REQUIRED_VERSION or higher."
+    exit 1
+fi
+
+# Download dependencies
+echo "📦 Downloading dependencies..."
+go mod download
+
+# Build the application
+echo "🔨 Building the application..."
+go build -o visa-payment-service .
+
+# Check if build was successful
+if [ $? -ne 0 ]; then
+    echo "❌ Build failed. Please check the errors above."
+    exit 1
+fi
+
+# Run the application
+echo "🎯 Starting the application..."
+./visa-payment-service
+
+echo "✅ Application started successfully!"
+echo "📚 API Documentation: http://localhost:8080/swagger/index.html"
+echo "💊 Health Check: http://localhost:8080/health"
